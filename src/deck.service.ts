@@ -764,6 +764,7 @@ export class AgentDeckService {
     private resumeOpening = new Set<string>()
     private resumeStarting = new Map<string, BaseTabComponent>()
     private repairInProgress = false
+    private isProcessAdmin = false
     private ptyResizeGeneration = new WeakMap<object, number>()
 
     /**
@@ -945,6 +946,7 @@ export class AgentDeckService {
         // 탭 변화 -> 사이드바 다시 그림
         // 탭 복원은 ready$ 보다 늦게 끝나므로 목록이 바뀔 때마다 감시 대상을 다시 훑는다
         // (watched WeakSet 이 중복 구독을 막는다)
+        this.detectProcessAdmin()
         this.app.tabsChanged$.subscribe(() => {
             for (const tab of this.app.tabs) {
                 this.watchTab(tab)
@@ -957,6 +959,7 @@ export class AgentDeckService {
             this.view?.setVisible(this.enabled && !isSettings)
             // 미리보기의 최근 목록은 탭마다 따로다 — 보고 있는 탭 것으로 바꿔 준다
             this.view?.setActiveTab(this.app.activeTab ?? null)
+            this.syncAdminTabs()
             this.relayout()
             this.scheduleRender()
             this.scheduleRefit()
@@ -3752,6 +3755,45 @@ export class AgentDeckService {
             return false
         }
         return !!target.closest('terminaltab, terminal-pane') && !target.closest(`#${SIDEBAR_ID}`)
+    }
+
+    /** Check once whether Tabby itself was launched elevated (Windows UAC) */
+    private detectProcessAdmin (): void {
+        if (process.platform !== 'win32') {
+            return
+        }
+        try {
+            const { execFile } = require('child_process')
+            execFile('fltmc.exe', [], { windowsHide: true, timeout: 2000 }, (err: unknown) => {
+                this.isProcessAdmin = !err
+                if (this.isProcessAdmin) {
+                    document.body.classList.add('ad-admin-process')
+                }
+                this.syncAdminTabs()
+            })
+        } catch {}
+    }
+
+    /** Tag elevated tab headers with .ad-tab-admin for CSS styling */
+    private syncAdminTabs (): void {
+        requestAnimationFrame(() => {
+            const headers = document.querySelectorAll('.tab-bar > .tabs tab-header')
+            this.app.tabs.forEach((tab, idx) => {
+                const header = headers.item(idx)
+                if (!header) {
+                    return
+                }
+                const anyTab = tab as any
+                const isAdmin = Boolean(
+                    this.isProcessAdmin
+                    || anyTab?.profile?.options?.runAsAdministrator
+                    || anyTab?.focusedPane?.profile?.options?.runAsAdministrator
+                    || (Array.isArray(anyTab?.children) && anyTab.children.some((c: any) => c?.profile?.options?.runAsAdministrator))
+                    || /administrator/i.test(String(anyTab?.profile?.name ?? '')),
+                )
+                header.classList.toggle('ad-tab-admin', isAdmin)
+            })
+        })
     }
 
     private async handleRightClick (ev: MouseEvent, heldMs: number): Promise<void> {
