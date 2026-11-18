@@ -22,6 +22,8 @@
 > npm run build
 > ```
 > Copy `dist/`, `hooks/`, `receiver/`, `updater/`, and `package.json` into `%APPDATA%\Tabby\plugins\node_modules\tabby-agentdeck\` and restart Tabby.
+>
+> To reproduce the full charcoal folder-tab look, Raycast-style profile modal, Base16 tab status gradients, and copper Admin outlines, apply the settings and Custom CSS in **[docs/THEME.md](docs/THEME.md)**.
 
 [![npm](https://img.shields.io/npm/v/tabby-agentdeck)](https://www.npmjs.com/package/tabby-agentdeck)
 [![downloads](https://img.shields.io/npm/dm/tabby-agentdeck)](https://www.npmjs.com/package/tabby-agentdeck)
