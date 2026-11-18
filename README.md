@@ -1,5 +1,28 @@
 # tabby-agentdeck
 
+> **Fork Notice:** This is a personal fork of **[jghwang2/tabby-agentdeck](https://github.com/jghwang2/tabby-agentdeck)** (created by `junggon`, MIT-licensed), rebased onto upstream `v1.3.2` with English localization and Tabby UI/UX refinements.
+>
+> ### Branches in this repository
+> - **`main`** — Clean mirror of `jghwang2/tabby-agentdeck` (`v1.3.2`).
+> - **`pr/english-i18n`** — Minimal branch containing only the English i18n commits for upstream contribution.
+> - **`feat/view-panel-i18n`** *(this branch)* — Full modded build with English i18n + Tabby toolbar, tab-state, and right-click refinements.
+>
+> ### What's changed on `feat/view-panel-i18n`
+> - **Full English i18n**: Localized the preview panel (`src/viewI18n.ts`), hook management in Settings (`src/hookI18n.ts`), and auto-update prompts/notifications (`src/update.service.ts`).
+> - **Preview Panel & Native Tab Bar**: Decoupled the preview panel layout from Tabby's native tab bar, fixed top-right window-control spacing, and enabled automatic file discovery in the preview panel.
+> - **Top-Right Sidebar Toggle & Dynamic Hotkey Tooltips** (`src/toolbar.ts`): Added a dynamic outline/filled right-sidebar toggle button next to Settings and appended live-configured hotkeys (`config.store.hotkeys`) to toolbar tooltips (`Toggle AgentDeck`, `Profiles & connections`, `New tab`, `Settings`).
+> - **Tab-Header State & Admin CSS Hooks** (`src/deck.service.ts`): Mirrors live session status (`.ad-status-{running,waiting,done,error,limited}`) and elevated/Admin state (`.ad-tab-admin` via `SplitTabComponent` `getAllTabs()`/`getFocusedTab()` and Windows `fltmc.exe` process check) onto `tab-header` elements for custom CSS theming.
+> - **Tab Bar Right-Click Fix** (`src/deck.service.ts`): Scoped `claimRightClick` to `terminaltab, terminal-pane` so right-clicking tabs opens Tabby's native tab context menu instead of pasting into the terminal.
+>
+> ### Building & Installing This Fork
+> ```powershell
+> git clone --branch feat/view-panel-i18n https://github.com/WouterVanGoey/tabby-agentdeck.git
+> cd tabby-agentdeck
+> npm install
+> npm run build
+> ```
+> Copy `dist/`, `hooks/`, `receiver/`, `updater/`, and `package.json` into `%APPDATA%\Tabby\plugins\node_modules\tabby-agentdeck\` and restart Tabby.
+
 [![npm](https://img.shields.io/npm/v/tabby-agentdeck)](https://www.npmjs.com/package/tabby-agentdeck)
 [![downloads](https://img.shields.io/npm/dm/tabby-agentdeck)](https://www.npmjs.com/package/tabby-agentdeck)
 [![CI](https://github.com/jghwang2/tabby-agentdeck/actions/workflows/ci.yml/badge.svg)](https://github.com/jghwang2/tabby-agentdeck/actions/workflows/ci.yml)
