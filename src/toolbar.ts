@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core'
 import { Command, CommandContext, CommandLocation, CommandProvider, ConfigService } from 'tabby-core'
 
-const SIDEBAR_ICON_SVG = '<svg class="ad-sidebar-toggle-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" style="fill: none !important; stroke: currentColor; stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round;">'
-    + '<rect x="1.75" y="2.25" width="12.5" height="11.5" rx="2" style="fill: none !important;"/>'
-    + '<rect class="ad-pane-fill" x="10.25" y="2.5" width="3.75" height="11" rx="0.75" style="stroke: none !important; fill: currentColor !important;"/>'
-    + '<line x1="10.25" y1="2.25" x2="10.25" y2="13.75" style="fill: none !important;"/>'
+const SIDEBAR_ICON_SVG = '<svg class="ad-sidebar-toggle-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" style="fill: none !important; stroke: currentColor; stroke-width: 1.3; stroke-linecap: round; stroke-linejoin: round; opacity: 0.85;">'
+    + '<rect x="1" y="1.5" width="14" height="13" rx="2" style="fill: none !important;"/>'
+    + '<rect class="ad-pane-fill" x="10.25" y="1.75" width="4.5" height="12.5" rx="1" style="stroke: none !important; fill: currentColor !important;"/>'
+    + '<line x1="10.25" y1="1.5" x2="10.25" y2="14.5" style="fill: none !important;"/>'
     + '</svg>'
 
 /**
