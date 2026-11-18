@@ -3785,12 +3785,17 @@ export class AgentDeckService {
                     return
                 }
                 const anyTab = tab as any
+                const panes: any[] = typeof anyTab?.getAllTabs === 'function'
+                    ? anyTab.getAllTabs()
+                    : [typeof anyTab?.getFocusedTab === 'function' ? (anyTab.getFocusedTab() ?? anyTab) : anyTab]
                 const isAdmin = Boolean(
                     this.isProcessAdmin
-                    || anyTab?.profile?.options?.runAsAdministrator
-                    || anyTab?.focusedPane?.profile?.options?.runAsAdministrator
-                    || (Array.isArray(anyTab?.children) && anyTab.children.some((c: any) => c?.profile?.options?.runAsAdministrator))
-                    || /administrator/i.test(String(anyTab?.profile?.name ?? '')),
+                    || anyTab?.color === '#f7768e'
+                    || panes.some(p =>
+                        p?.profile?.options?.runAsAdministrator
+                        || p?.color === '#f7768e'
+                        || /administrator/i.test(String(p?.profile?.name ?? '')),
+                    ),
                 )
                 header.classList.toggle('ad-tab-admin', isAdmin)
                 const st = this.status.get(tab).status
