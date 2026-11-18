@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core'
 import { CommonModule } from '@angular/common'
 import { FormsModule } from '@angular/forms'
-import TabbyCoreModule, { AppService, ConfigProvider, ConfigService, HotkeyProvider } from 'tabby-core'
+import TabbyCoreModule, { AppService, CommandProvider, ConfigProvider, ConfigService, HotkeyProvider } from 'tabby-core'
 import { configureStoragePaths } from './storagePaths'
 import { migrateRuntimeData } from './runtimeMigration'
 import { SettingsTabProvider } from 'tabby-settings'
@@ -9,6 +9,7 @@ import { TerminalDecorator } from 'tabby-terminal'
 
 import { AgentDeckConfigProvider } from './config'
 import { AgentDeckHotkeyProvider } from './hotkeys'
+import { AgentDeckCommandProvider } from './toolbar'
 import { AgentDeckDecorator } from './decorator'
 import { AgentDeckService } from './deck.service'
 import { AgentDeckProfileService } from './profile.service'
@@ -35,6 +36,7 @@ export * from './api'
     providers: [
         { provide: ConfigProvider, useClass: AgentDeckConfigProvider, multi: true },
         { provide: HotkeyProvider, useClass: AgentDeckHotkeyProvider, multi: true },
+        { provide: CommandProvider, useClass: AgentDeckCommandProvider, multi: true },
         { provide: TerminalDecorator, useClass: AgentDeckDecorator, multi: true },
         { provide: SettingsTabProvider, useClass: AgentDeckSettingsTabProvider, multi: true },
     ],

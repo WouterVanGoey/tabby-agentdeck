@@ -985,6 +985,7 @@ export class AgentDeckService {
         }
         this.status.changed$.subscribe(() => {
             this.mailboxWake.flushAll()
+            this.syncAdminTabs()
             this.scheduleRender()
         })
         this.status.idled$.subscribe(() => this.mailboxWake.flushAll())
@@ -3792,6 +3793,10 @@ export class AgentDeckService {
                     || /administrator/i.test(String(anyTab?.profile?.name ?? '')),
                 )
                 header.classList.toggle('ad-tab-admin', isAdmin)
+                const st = this.status.get(tab).status
+                for (const s of ['running', 'waiting', 'done', 'error', 'limited']) {
+                    header.classList.toggle(`ad-status-${s}`, st === s)
+                }
             })
         })
     }
